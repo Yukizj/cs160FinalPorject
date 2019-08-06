@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>CS160 Final Project</title>
+  <meta name="author" content="Group9">
+  <meta name="description" content="Final Project for CS160">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<style type="text/css">
+		.swatch {
+			width: 24px;
+			height: 24px;
+			-moz-border-radius: 12px;
+			-webkit-border-radius: 12px;
+			border-radius: 12px;
+			margin: 3px;
+		}
+		#myCanvas {
+			padding-left: 0;
+		  padding-right: 0;
+		  margin-left: auto;
+		  margin-right: auto;
+		  display: block;
+      background-image: url("/image/berkeleyArea.png"); 
+		}
+	</style>
+</head>
+
+<body>
+  <!--   Content Here -->
+  <p id="instruction">Pick a starting Point!</p>
+	<canvas id="myCanvas" width="750px" height="750px"></canvas>
+  <div id="informationBox">
+    <div id="numberOfPointsBox">
+      Number of points: 0
+      <ul id="listOfStops">
+        
+      </ul>
+    </div>
+    <div id="distanceBox">
+      0
+    </div>
+    <div id="speedInputBox">
+<!--       this is a box where you input the speed -->
+    </div>
+    <div id="calorieBox">
+      
+    </div>
+    <div id="timeBox">
+      
+    </div>
+    
+    
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="js/paper-full.min.js"></script>
+  
+<!--   <script src="js/script.js"></script> -->
+</body>
+<script>
+  $(document).ready(function(){
+    // setting up the canvas and one paper tool
+     var canvas = document.getElementById('myCanvas');
+     paper.setup(canvas);
+     var tool = new paper.Tool();
+     var color = paper.Color.random();
+     var myPath = new paper.Path();
+     myPath.strokeColor = color;
+     var numberOfPoints = 0;    
+     var start_point; 
+     var paths = [];
+     tool.onMouseDown = function(event){
+      if(numberOfPoints==0){
+        start_point = new paper.Path.Circle({
+          center: event.point,
+          radius: 5,
+          fillColor: 'red',
+          strokeColor: "black"
+        });  
+      }else{
+        start_point = new paper.Path.Circle({
+          center: event.point,
+          radius: 3,
+          fillColor: 'blue',
+          strokeColor: "black"
+        });  
+      }
+       paths.push(event.point);
+       myPath.add(event.point);
+       numberOfPoints++;
+       
+       //display handling
+      };  
+     tool.onMouseMove = function(event){
+       if(numberOfPoints){
+         //draw
+//          myPath.removeSegment
+       }
+     }
+  });
+</script>
+</html>
+
