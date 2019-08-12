@@ -7,98 +7,461 @@
   <meta name="author" content="Group9">
   <meta name="description" content="Final Project for CS160">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-	<style type="text/css">
-		.swatch {
-			width: 24px;
-			height: 24px;
-			-moz-border-radius: 12px;
-			-webkit-border-radius: 12px;
-			border-radius: 12px;
-			margin: 3px;
-		}
-		#myCanvas {
-			padding-left: 0;
-		  padding-right: 0;
-		  margin-left: auto;
-		  margin-right: auto;
-		  display: block;
-      background-image: url("/image/berkeleyArea.png"); 
-		}
-	</style>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="js/paper-full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  
+  <script src="https://use.fontawesome.com/bba56112c9.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+  <style type="text/css">
+    body {
+      font-family: 'Bebas Neue', sans-serif;
+    }
+
+    .swatch {
+      width: 24px;
+      height: 24px;
+      -moz-border-radius: 12px;
+      -webkit-border-radius: 12px;
+      border-radius: 12px;
+      margin: 3px;
+    }
+    
+/*        .nav {
+        background-color: white;
+        width: 100%;
+        height: 70px;
+        top: 0;
+        text-decoration: none;
+        list-style: none;
+        text-transform: uppercase;
+        display: inline-block;
+        z-index: 999;
+        position: fixed; 
+      } */
+    
+    .header{
+      height: 70px;
+      top:0px;
+      width: 100%;
+      background-color: #51ace8;
+      margin-top: 10px;
+      margin-bottom:10px;
+    }
+    
+        .toolbar {
+/*         background-color: red; */
+        width: 50px;
+        height: 100%;
+        top: 100px;
+        right: 20px;
+        text-decoration: none;
+        list-style: none;
+        text-transform: uppercase;
+        display: inline-block;
+        z-index: 999;
+        position: absolute; 
+      }
+
+/*     #myCanvas {
+      width: 100%;
+      height: 100%;
+      padding-left: 0;
+      padding-right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      display: block; */
+/*       background-image: url("/image/berkeleyArea.png"); */
+/*     background-image: url('/image/berkeleyMap2.png');
+        background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+      z-index: 0;
+    } */
+    
+    canvas{
+      width: 450px;
+      height: 850px;
+      display: block;
+      background-image: url('/image/berkeleyMap2.png');
+      background-position: center;
+      background-size: cover;
+    }
+    #myCanvas{
+      z-index:5;
+    }
+    
+    .center{
+        margin: auto;
+  width: 300px;
+    }
+    
+   #pullout {
+/*   position: absolute;
+  top: 10px;
+  left: -230px;
+  width: 266px;
+  height: 280px;
+  background: #f5f5f5;
+  transition: all 0.5s ease; */
+  position: fixed;
+  bottom: -230px;
+  height: 280px;
+  border-radius:25px;
+  width: 300px;
+  background: #ffffff;
+  opacity: .8;
+  transition: all 1.5s ease;
+  z-index: 1000;
+}
+
+#pullout.active {
+/*   left: 0; */
+  bottom: 0px;
+}
+
+#pullout-inner {
+  position: absolute;
+  top: 60px;
+  width: 230px;
+  height: 280px;
+/*   position: absolute;
+  height: 230px;
+  width: 280px;
+  bottom: 0; */
+}
+
+#pullout-form {
+  width: 230px;
+  height: 280px;
+/*   width: 280px;
+  height: 280px; */
+}
+
+#pullout-tab {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 60px;
+  border-radius:25px 25px 0px 0px;
+  background: #51ace8;
+  cursor: pointer;
+/*   position: absolute;
+  bottom: 0;
+  width: 280px;
+  height: 30px;
+  background: red;
+  cursor: pointer; */
+}
+
+    #informationBox {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      border: 1px solid black;
+      height: 400px;
+    }
+
+    #distanceBox {
+      flex-grow: 1;
+      background-color: 'green';
+      border: 1px solid black;
+    }
+
+    #bottomArea {
+      flex-grow: 4;
+      background-color: 'orange';
+      display: flex;
+      flex-direction: row;
+      border: 1px solid black;
+    }
+
+    #doneButton {
+/*       display: none; */
+    }
+
+    #timeBox, #carouselBox {
+      flex-grow: 1;
+      border: 1px solid black;
+    }
+    
+    
+       
+  </style>
 </head>
 
 <body>
   <!--   Content Here -->
-  <p id="instruction">Pick a starting Point!</p>
-	<canvas id="myCanvas" width="750px" height="750px"></canvas>
-  <div id="informationBox">
-    <div id="numberOfPointsBox">
-      Number of points: 0
-      <ul id="listOfStops">
+<!--       <div class="alert alert-primary" role="alert">
+    Alert message
+    <p id="instruction">Pick a starting Point!</p>
+<!--     <button id="doneButton" type="button" class="btn btn-primary" onClick="doneButtonHandler()">done</button> -->
         
-      </ul>
+<!--             <div class='row'>
+      <div class='col'>hello1</div>
+      <div class='col'>hello2</div>
+      <div class='col'>hello3</div>
     </div>
-    <div id="distanceBox">
-      0
-    </div>
-    <div id="speedInputBox">
-<!--       this is a box where you input the speed -->
-    </div>
-    <div id="calorieBox">
-      
-    </div>
-    <div id="timeBox">
-      
-    </div>
-    
-    
+  </div> -->
+  <div class='header'>
+    <div class='row'>
+      <div class='col-3' align=middle style='color:white; margin-top:15px' >
+        <i class="fa fa-bars" style='font-size:36px'></i>
+      </div>
+      <div class='col-6' align=middle style='color:white; font-size:42px; margin-top:5px'>ON THE <b>RUN</b></div>
+      <div class='col-3' align=middle style='color:white; margin-top:15px'>
+        <i class="fa fa-search" style='font-size:32px'></i>
+      </div>
   </div>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-  <script src="js/paper-full.min.js"></script>
+  </div>
   
-<!--   <script src="js/script.js"></script> -->
+  
+  <canvas id="myCanvas"> </canvas>
+
+<!--   <div class='nav'>
+    <div class='row'>
+      <div class='col'>hello1</div>
+      <div class='col'>hello2</div>
+      <div class='col'>hello3</div>
+    </div>
+  </div> -->
+  
+  
+      <div class='toolbar' align='right'>
+<!--     <button id="undoButton" type="button" class="btn btn-secondary" onClick="undoButtonHandler()">
+              <i class="fa fa-undo" style='font-size:36px'  onClick="undoButtonHandler()"></i>
+      undo
+    </button> -->
+        <i class="fa fa-undo"style='font-size:36px; color:#51ace8' onClick="undoButtonHandler()"></i>
+    <p></p>
+    <button id="redoButton" type="button" class="btn btn-secondary" onClick="redoButtonHandler()">
+      redo
+    </button>
+        <p></p>
+        <button id="closeButton" type="button" class="btn btn-secondary" onClick="closePathHandler()">
+      close
+    </button>
+    <p></p>
+     <button id="resetButton" type="button" class="btn btn-secondary" onClick="resetButtonHandler()">
+      reset
+    </button>
+        <p></p>
+        <button id="doneButton" type="button" class="btn btn-secondary" onClick="doneButtonHandler()">done</button>
+  </div>
+  
+    <div class='center'>
+    <div id="pullout">
+  <div id="pullout-tab" align='middle'>
+        <p align='middle' style='color:white; font-size:24px; padding:10px'>
+      Total Distance: <span id="distance"> 0.0</span> miles
+    </p>
+      </div>
+  <div id="pullout-inner">
+    <div class='row'>
+       <div class='col'>
+          <span id="speed">1000km/h</span>
+    </div>
+    <div class='col'>
+                <div id="carouselExampleControls carouselBox" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            Calories: <span id="calories"> 0</span> calories
+          </div>
+          <div class="carousel-item">
+            <span id="time">6:00</span>
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+        </div>
+    </div>
+    </div>
+  </div>
+</div>
+    </div>
+
+
+
+  
+<!--   <div id="undoRedoBox">
+    <button id="undoButton" type="button" class="btn btn-secondary" onClick="undoButtonHandler()">
+      undo
+    </button>
+    <button id="redoButton" type="button" class="btn btn-secondary" onClick="redoButtonHandler()">
+      redo
+    </button>
+     <button id="resetButton" type="button" class="btn btn-secondary" onClick="resetButtonHandler()">
+      reset
+    </button>
+    <button id="closeButton" type="button" class="btn btn-secondary" onClick="closePathHandler()">
+      close
+    </button>
+  </div> -->
+
+  <!--  *****ASHLEYPARK HERE***** -->
+<!--   <div id="informationBox">
+    <div id="distanceBox">
+      Distance: <span id="distance"> 0</span> miles
+    </div>
+    <div id="bottomArea">
+      <div id="speedInputBox">
+        <span id="speed">1000km/h</span>
+      </div>
+      
+      <div id="carouselExampleControls carouselBox" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            Calories: <span id="calories"> 0</span> calories
+          </div>
+          <div class="carousel-item">
+            <span id="time">6:00</span>
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+        </div>
+    </div>
+  </div> -->
+  
+
+
+
+  <!--   <script src="js/script.js"></script> -->
 </body>
 <script>
-  $(document).ready(function(){
-    // setting up the canvas and one paper tool
-     var canvas = document.getElementById('myCanvas');
-     paper.setup(canvas);
-     var tool = new paper.Tool();
-     var color = paper.Color.random();
-     var myPath = new paper.Path();
-     myPath.strokeColor = color;
-     var numberOfPoints = 0;    
-     var start_point; 
-     var paths = [];
-     tool.onMouseDown = function(event){
-      if(numberOfPoints==0){
+  var done = false; //This is a state variable whether you are done with the path or not.
+  var distance = 0;
+  var firstPoint;
+  var secondPoint;
+  var pathHistory = [];
+  // setting up the canvas and one paper tool
+  var canvas = document.getElementById('myCanvas');
+  paper.setup(canvas);
+  var tool = new paper.Tool();
+  var myPath = new paper.Path();
+  var shape; 
+  myPath.style = {
+    strokeColor: '#4092c7', 
+//     DARK BLUE
+    strokeWidth: 5
+  };
+  var calories = 0;
+  var start_point;
+  var numberofPoints = 0;
+
+  tool.onMouseDrag = function(event) {
+    if (numberofPoints > 2) {
+      $("#doneButton").show();
+    }
+    if (done == false) {
+      if (numberofPoints == 0) {
         start_point = new paper.Path.Circle({
           center: event.point,
-          radius: 5,
-          fillColor: 'red',
-          strokeColor: "black"
-        });  
-      }else{
-        start_point = new paper.Path.Circle({
-          center: event.point,
-          radius: 3,
-          fillColor: 'blue',
-          strokeColor: "black"
-        });  
+          radius: 8,
+          fillColor: '#51ace8',
+          strokeColor: "white"
+        });
+        shape = paper.Shape.Circle(event.point, 15);
+        shape.strokeColor = '#51ace8';
+        //       }else{
+        //         start_point = new paper.Path.Circle({
+        //           center: event.point,
+        //           radius: 3,
+        //           fillColor: '#51ace8',
+        //           strokeColor: "#51ace8"
+        //         });  
       }
-       paths.push(event.point);
-       myPath.add(event.point);
-       numberOfPoints++;
-       
-       //display handling
-      };  
-     tool.onMouseMove = function(event){
-       if(numberOfPoints){
-         //draw
-//          myPath.removeSegment
-       }
+      myPath.add(event.point);
+      numberofPoints++;
+      secondPoint = event.point;
+      if (secondPoint != null && firstPoint != null) {
+        distance += firstPoint.getDistance(secondPoint);
+        document.getElementById("distance").innerHTML = (distance / 100).toFixed(2);
+        calories = (150 * distance / 100).toFixed(2);
+        document.getElementById("calories").innerHTML = calories;
+      }
+      firstPoint = event.point;
+      //display handling
+      myPath.smooth();
+    }
+  };
+
+
+  function undoButtonHandler() {
+    if (!done) {
+      myPath.closed = false;
+      var segDistance = 0;
+      if (myPath.segments.length >= 20) {
+        segDistance = (myPath.segments[myPath.segments.length-1]._point).getDistance(myPath.segments[myPath.segments.length - 20]._point);
+        distance -= segDistance;
+        document.getElementById("distance").innerHTML = (distance / 100).toFixed(2);
+        calories = (150 * distance / 100).toFixed(2);
+        document.getElementById("calories").innerHTML = calories;
+        pathHistory.push([myPath.segments.slice(myPath.segments.length - 20, myPath.segments.length), segDistance]);
+        myPath.removeSegments(myPath.segments.length - 20, myPath.segments.length);
+      }else{
+//         location.reload();
+        if(myPath.segments.length != 0){
+             myPath.removeSegments(); 
+        }
+        else{
+        start_point.remove();
+        shape.remove();
+        numberofPoints = 0;
+        }
+      }
+      if (pathHistory.length > 10) {
+        pathHistory.shift();
+      }
+    }
+  };
+
+  function redoButtonHandler(event) {
+    distance += pathHistory[pathHistory.length-1][1];
+    document.getElementById("distance").innerHTML = (distance / 100).toFixed(2);
+    myPath.addSegments(pathHistory.pop()[0]);
+  };
+  
+  function resetButtonHandler(event) {
+    location.reload();
+  };
+  
+   function closePathHandler(event) {
+     if(!myPath.closed){
+       myPath.closed = true;
      }
-  });
+     distance=myPath.length;
+     document.getElementById("distance").innerHTML = (distance / 100).toFixed(2);
+  };
+
+  function doneButtonHandler(event) {
+    done = true;
+  }
+  
+  myPath.onClick=function(event){
+    myPath.insert(event.point);
+  }
+  
+  
+  
+  $('#pullout-tab').click(function() {
+  $('#pullout').toggleClass('active');
+});
 </script>
+
 </html>
 

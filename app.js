@@ -30,6 +30,13 @@ app.get('/', function(req, res, next) {
     res.status(200).sendFile(path.join(__dirname, '/public/index.html'));
 });
 
+app.get('/v1',function(req,res,next){
+  res.status(200).sendFile(path.join(__dirname, '/public/v1.html'));
+});
+
+app.get('/v2',function(req,res,next){
+  res.status(200).sendFile(path.join(__dirname, '/public/v2.html'));
+});
 
 app.use(function(err,req,res,next){
 	//error handling 

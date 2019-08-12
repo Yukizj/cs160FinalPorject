@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>CS160 Final Project</title>
+  <meta name="author" content="Group9">
+  <meta name="description" content="Final Project for CS160">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<style type="text/css">
+		.swatch {
+			width: 24px;
+			height: 24px;
+			-moz-border-radius: 12px;
+			-webkit-border-radius: 12px;
+			border-radius: 12px;
+			margin: 3px;
+		}
+		#myCanvas {
+			padding-left: 0;
+		  padding-right: 0;
+		  margin-left: auto;
+		  margin-right: auto;
+		  display: block;
+      background-image: url("/image/berkeleyArea.png"); 
+		}
+	</style>
+</head>
+
+<body>
+  <!--   Content Here -->
+  
+  <div id="googleMap" style="width:100%;height:400px;"></div>
+
+<script>
+function myMap() {
+var mapProp= {
+  center:new google.maps.LatLng(37.8715, -122.2730),
+  zoom:15,
+  mapTypeId: google.maps.MapTypeId.ROADMAP
+};
+var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+  
+}
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAo701rzNjcWjV5KarWXAsRKR0SBu6pZYU&callback=myMap"></script>
+  
+  
+  
+  
+  <p id="instruction">Pick a starting Point!</p>
+	<canvas id="myCanvas" width="1000px" height="1000px"></canvas>
+  <div id="undoRedoBox">
+    <button id="undoButton" onClick="undoButtonHandler()">
+      undo
+    </button>
+    <button id="redoButton">
+      redo
+    </button>
+  </div>
+  <div id="informationBox">
+    <div id="distanceBox">
+      Distance: <span id="distance"> 0</span> miles
+    </div>
+    <div id="speedInputBox">
+<!--       this is a box where you input the speed -->
+    </div>
+    <div id="calorieBox">
+        Calories: <span id="calories"> 0</span> calories
+    </div>
+    <div id="timeBox">
+      
+    </div>
+    
+    
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="js/paper-full.min.js"></script>
+  
+<!--   <script src="js/script.js"></script> -->
+</body>
+<script>
+
+    var distance = 0; 
+    var firstPoint;
+    var secondPoint; 
+    // setting up the canvas and one paper tool
+    var canvas = document.getElementById('myCanvas');
+    paper.setup(canvas);
+    var tool = new paper.Tool();
+    var myPath = new paper.Path();
+      myPath.style = {
+      strokeColor: 'black',
+      strokeWidth: 5
+    };
+    var calories = 0;    
+     var start_point; 
+    var numberofPoints = 0; 
+     
+
+     tool.onMouseDrag = function(event){
+       if(numberofPoints==0){
+         start_point = new paper.Path.Circle({
+         center: event.point,
+          radius: 6,
+         fillColor: 'blue',
+         strokeColor: "white"
+       });
+         var shape = paper.Shape.Circle(event.point, 15); 
+         shape.strokeColor = 'blue'; 
+//       }else{
+//         start_point = new paper.Path.Circle({
+//           center: event.point,
+//           radius: 3,
+//           fillColor: 'blue',
+//           strokeColor: "black"
+//         });  
+     }
+       myPath.add(event.point);
+       
+       numberofPoints++;
+        secondPoint = event.point; 
+       if(secondPoint != null && firstPoint != null){
+        distance += firstPoint.getDistance(secondPoint);
+         document.getElementById("distance").innerHTML = (distance/100).toFixed(2);
+         calories =  (150*distance/100).toFixed(2);
+         document.getElementById("calories").innerHTML = calories; 
+       }
+        firstPoint = event.point; 
+       //display handling
+      myPath.smooth();
+      };
+  
+   tool.onMouseUp = function(event){
+         start_point = new paper.Path.Circle({
+         center: event.point,
+          radius: 6,
+         fillColor: 'red',
+         strokeColor: "white"
+       });
+         var shape = paper.Shape.Circle(event.point, 15); 
+         shape.strokeColor = 'red';
+   };
+  
+   function undoButtonHandler(evnet){
+    //Yuki here
+    alert("Boo"); 
+  };
+ 
+
+</script>
+</html>
+
