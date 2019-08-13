@@ -7,148 +7,492 @@
   <meta name="author" content="Group9">
   <meta name="description" content="Final Project for CS160">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-	<style type="text/css">
-		.swatch {
-			width: 24px;
-			height: 24px;
-			-moz-border-radius: 12px;
-			-webkit-border-radius: 12px;
-			border-radius: 12px;
-			margin: 3px;
-		}
-		#myCanvas {
-			padding-left: 0;
-		  padding-right: 0;
-		  margin-left: auto;
-		  margin-right: auto;
-		  display: block;
-      background-image: url("/image/berkeleyArea.png"); 
-		}
-	</style>
-</head>
-
-<body>
-  <!--   Content Here -->
-  
-  <div id="googleMap" style="width:100%;height:400px;"></div>
-
-<script>
-function myMap() {
-var mapProp= {
-  center:new google.maps.LatLng(37.8715, -122.2730),
-  zoom:15,
-  mapTypeId: google.maps.MapTypeId.ROADMAP
-};
-var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
-  
-}
-</script>
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAo701rzNjcWjV5KarWXAsRKR0SBu6pZYU&callback=myMap"></script>
-  
-  
-  
-  
-  <p id="instruction">Pick a starting Point!</p>
-	<canvas id="myCanvas" width="1000px" height="1000px"></canvas>
-  <div id="undoRedoBox">
-    <button id="undoButton" onClick="undoButtonHandler()">
-      undo
-    </button>
-    <button id="redoButton">
-      redo
-    </button>
-  </div>
-  <div id="informationBox">
-    <div id="distanceBox">
-      Distance: <span id="distance"> 0</span> miles
-    </div>
-    <div id="speedInputBox">
-<!--       this is a box where you input the speed -->
-    </div>
-    <div id="calorieBox">
-        Calories: <span id="calories"> 0</span> calories
-    </div>
-    <div id="timeBox">
-      
-    </div>
-    
-    
-  </div>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script src="js/paper-full.min.js"></script>
-  
-<!--   <script src="js/script.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+  <script src="https://use.fontawesome.com/bba56112c9.js"></script>
+  <script src="https://kit.fontawesome.com/400d95b8fb.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+  <style type="text/css">
+    body {
+      font-family: 'Bebas Neue', sans-serif;
+    }
+
+    .swatch {
+      width: 24px;
+      height: 24px;
+      -moz-border-radius: 12px;
+      -webkit-border-radius: 12px;
+      border-radius: 12px;
+      margin: 3px;
+    }
+
+/*        .nav {
+        background-color: white;
+        width: 100%;
+        height: 70px;
+        top: 0;
+        text-decoration: none;
+        list-style: none;
+        text-transform: uppercase;
+        display: inline-block;
+        z-index: 999;
+        position: fixed;
+      } */
+
+    .header{
+      height: 70px;
+      top:0px;
+      width: 100%;
+      background-color: #79b5db;
+      margin-top: 10px;
+      margin-bottom:10px;
+    }
+
+    .toolbar {
+/*         background-color: red; */
+    width: 50px;
+    height: 100%;
+    top: 100px;
+    right: 20px;
+    text-decoration: none;
+    list-style: none;
+    text-transform: uppercase;
+    display: inline-block;
+    z-index: 2;
+    position: absolute;
+  }
+
+/*     #myCanvas {
+      width: 100%;
+      height: 100%;
+      padding-left: 0;
+      padding-right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      display: block; */
+/*       background-image: url("/image/berkeleyArea.png"); */
+/*     background-image: url('/image/berkeleyMap2.png');
+        background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+      z-index: 0;
+    } */
+
+    canvas{
+      width: 450px;
+      height: 850px;
+      display: block;
+      background-image: url('/image/berkeleyMap2.png');
+      background-position: center;
+      background-size: cover;
+    }
+    #myCanvas{
+      z-index:5;
+    }
+
+    .center{
+        margin: auto;
+  width: 300px;
+    }
+
+   #pullout {
+/*   position: absolute;
+  top: 10px;
+  left: -230px;
+  width: 266px;
+  height: 280px;
+  background: #f5f5f5;
+  transition: all 0.5s ease; */
+  position: fixed;
+  bottom: -230px;
+  height: 280px;
+  border-radius:25px;
+  width: 300px;
+  background: #ffffff;
+  opacity: .8;
+  transition: all 1s ease;
+  z-index: 1000;
+}
+
+#pullout.active {
+/*   left: 0; */
+  bottom: 0px;
+}
+
+#pullout-inner {
+  position: absolute;
+  top: 60px;
+  width: 300px;
+  height: 280px;
+  background: #79b5db;
+/*   position: absolute;
+  height: 230px;
+  width: 280px;
+  bottom: 0; */
+}
+
+#pullout-form {
+  width: 230px;
+  height: 280px;
+/*   width: 280px;
+  height: 280px; */
+}
+
+#pullout-tab {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 60px;
+  border-radius:25px 25px 0px 0px;
+  background: #79b5db;
+  cursor: pointer;
+/*   position: absolute;
+  bottom: 0;
+  width: 280px;
+  height: 30px;
+  background: red;
+  cursor: pointer; */
+}
+
+    #informationBox {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      border: 1px solid black;
+      height: 400px;
+    }
+
+    #distanceBox {
+      flex-grow: 1;
+      background-color: 'green';
+      border: 1px solid black;
+    }
+
+    #bottomArea {
+      flex-grow: 4;
+      background-color: 'orange';
+      display: flex;
+      flex-direction: row;
+      border: 1px solid black;
+    }
+
+    #doneButton {
+/*       display: none; */
+    }
+    
+    #saveButton{
+      display: none;
+      z-index:999;
+    }
+
+    /* The side navigation menu */
+    .sidenav {
+      height: 100%; /* 100% Full-height */
+      width: 0; /* 0 width - change this with JavaScript */
+      position: fixed; /* Stay in place */
+      z-index: 3; /* Stay on top */
+      top: 0; /* Stay at the top */
+      left: 0;
+      background-color: #79b5db; /* light blue*/
+      overflow-x: hidden; /* Disable horizontal scroll */
+      padding-top: 60px; /* Place content 60px from the top */
+      transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+    }
+
+    /* The navigation menu links */
+    .sidenav a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 25px;
+      color: white;
+      display: block;
+      transition: 0.3s;
+    }
+
+    /* When you mouse over the navigation links, change their color */
+    .sidenav a:hover {
+      color: #818181;
+    }
+
+    /* Position and style the close button (top right corner) */
+    .sidenav .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+    }
+
+    /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+    #main {
+      transition: margin-left .5s;
+      padding: 20px;
+    }
+
+    /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+    @media screen and (max-height: 450px) {
+      .sidenav {padding-top: 15px;}
+      .sidenav a {font-size: 18px;}
+    }
+
+
+    ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+
+ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+.box{
+  width: 80px;
+  height:80px;
+  background: blue;
+}
+
+  </style>
+</head>
+<body>
+
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="#"> <i class="fas fa-heart" style='padding:5px; font-size:20px'></i> Saved Courses</a>
+    <a href="#"> <i class="fas fa-chart-line" style='padding:5px; font-size:20px'></i>Running Log</a>
+    <a href="#"> <i class="fas fa-star" style='padding:5px; font-size:20px'></i>Goals</a>
+    <a href="#"><i class="fas fa-cog" style='padding:5px; font-size:20px'></i>Settings</a>
+  </div>
+
+  <div class='header'>
+    <div class='row'>
+      <div class='col-3' align=middle style='color:white; margin-top:5px'>
+        <i class="fa fa-bars" style='font-size:36px' onclick="openNav()"></i>
+      </div>
+      <div class='col-6' align=middle style='color:white; font-size:42px; margin-top:5px'>ON THE <b>RUN</b></div>
+      <div class='col-3' align=middle style='color:white; margin-top:5px'>
+        <i class="fa fa-search-plus" style='font-size:32px'></i>
+      </div>
+    </div>
+  </div>
+
+
+  <canvas id="myCanvas"> </canvas>
+
+
+
+  <div class='toolbar' align='right'>
+    <!--     <button id="undoButton" type="button" class="btn btn-secondary" onClick="undoButtonHandler()">
+            <i class="fa fa-undo" style='font-size:36px'  onClick="undoButtonHandler()"></i>
+    undo
+  </button> -->
+    <i class="fas fa-undo" style='font-size:36px; color:#79b5db' onClick="undoButtonHandler()"></i>
+    <p></p>
+    <i class="fas fa-redo" style='font-size:36px; color:#79b5db' onClick="redoButtonHandler()"></i>
+    <p></p>
+    <i class="fas fa-link" style='font-size:36px; color:#79b5db' onClick="closePathHandler()"></i>
+    <!-- <button id="closeButton" type="button" class="btn btn-secondary" onClick="closePathHandler()">
+    close
+  </button> -->
+    <p></p>
+    <i class="fas fa-trash" style='font-size:36px; color:#79b5db' onClick="resetButtonHandler()"></i>
+    <!-- <button id="resetButton" type="button" class="btn btn-secondary" onClick="resetButtonHandler()">
+    reset
+  </button> -->
+    <p></p>
+    <button id="doneButton" type="button" class="btn btn-secondary" onClick="doneButtonHandler()">done</button>
+  </div>
+
+  <div class='center'>
+    <div id="pullout">
+      <div id="pullout-tab" align='middle'>
+        <p align='middle' style='color:white;font-size:24px; padding:10px'>
+          Distance: <span id="distance"> 0.0</span> miles
+        </p>
+      </div>
+      <div id="pullout-inner" style='background-color:white;opacity:0.95'>
+        <div class=row align=middle>
+          <div class=col-6 id="speedInputBox" align=right style='padding:5px'>
+            <a style='color:#79b5db; font-family: Raleway, sans-serif; font-size:12px'><i><b>Input your avg speed</b></i></a>
+            <form action="/action_page.php" style='padding=0px'>
+              <input style='font-size:36px; color:#79b5db; background-color:#e1edf5;' id='speed' type="number"
+                name="quantity" min="1" max="15" value='5' >
+              <a style='font-size:24px; color:#79b5db; padding:5px;'>MPH</a>
+            </form>  
+          </div>
+
+          <div class=col-6 align=left style='padding-top:5px'>
+            <i class="far fa-heart"style='color:#79b5db; font-size:50px; margin-top:25px; margin-bottom:0px' id='saveBtn'
+               onclick='toggleSave()'></i> 
+<!--             <i class="fas fa-heart"style='color:#79b5db; font-size:50px; margin-top:25px; margin-bottom:0px' id='saved'></i>  -->
+          </div>
+        </div>
+        
+        <div class=row align=middle>
+          <div class=col-6 align=right style='padding:5px'>
+<p style='margin-bottom:0px;color:#79b5db; font-family: Raleway, sans-serif; font-size:8px'><i>*estimated*</i></p>
+            <i class="far fa-clock" style='color:#79b5db; font-size:30px; margin-top:0px; margin-bottom:0px'></i>   <a style='font-size:30px; color:#79b5db;'><span id="time">00h 00m</span></a>
+          </div>
+             <div class=col-6 align = left style='padding:5px'>
+<p style='margin-bottom:0px;color:#79b5db; font-family: Raleway, sans-serif; font-size:8px'><i>*estimated*</i></p>
+            <i class="fas fa-fire" style='color:#79b5db; font-size:30px; margin-top:0px; margin-bottom:0px'></i>   <a style='font-size:30px; color:#79b5db;'><span id="calories"> 0</span></a>
+            <p style='margin-bottom:0px;margin-top:0px;color:#79b5db; font-family: Raleway, sans-serif; font-size:12px'>CALORIES BURNED</p>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 </body>
 <script>
-
-    var distance = 0; 
-    var firstPoint;
-    var secondPoint; 
-    // setting up the canvas and one paper tool
-    var canvas = document.getElementById('myCanvas');
-    paper.setup(canvas);
-    var tool = new paper.Tool();
-    var myPath = new paper.Path();
-      myPath.style = {
-      strokeColor: 'black',
-      strokeWidth: 5
-    };
-    var calories = 0;    
-     var start_point; 
-    var numberofPoints = 0; 
-     
-
-     tool.onMouseDrag = function(event){
-       if(numberofPoints==0){
-         start_point = new paper.Path.Circle({
-         center: event.point,
-          radius: 6,
-         fillColor: 'blue',
-         strokeColor: "white"
-       });
-         var shape = paper.Shape.Circle(event.point, 15); 
-         shape.strokeColor = 'blue'; 
-//       }else{
-//         start_point = new paper.Path.Circle({
-//           center: event.point,
-//           radius: 3,
-//           fillColor: 'blue',
-//           strokeColor: "black"
-//         });  
-     }
-       myPath.add(event.point);
-       
-       numberofPoints++;
-        secondPoint = event.point; 
-       if(secondPoint != null && firstPoint != null){
-        distance += firstPoint.getDistance(secondPoint);
-         document.getElementById("distance").innerHTML = (distance/100).toFixed(2);
-         calories =  (150*distance/100).toFixed(2);
-         document.getElementById("calories").innerHTML = calories; 
-       }
-        firstPoint = event.point; 
-       //display handling
-      myPath.smooth();
-      };
-  
-   tool.onMouseUp = function(event){
-         start_point = new paper.Path.Circle({
-         center: event.point,
-          radius: 6,
-         fillColor: 'red',
-         strokeColor: "white"
-       });
-         var shape = paper.Shape.Circle(event.point, 15); 
-         shape.strokeColor = 'red';
-   };
-  
-   function undoButtonHandler(evnet){
-    //Yuki here
-    alert("Boo"); 
-  };
  
+  $("#saved").hide();
+  var done = false; //This is a state variable whether you are done with the path or not.
+  var distance = 0;
+  var firstPoint;
+  var secondPoint;
+  var pathHistory = [];
+  // setting up the canvas and one paper tool
+  var canvas = document.getElementById('myCanvas');
+  paper.setup(canvas);
+  var tool = new paper.Tool();
+  var myPath = new paper.Path();
+  var shape;
+  myPath.style = {
+    strokeColor: '#4092c7',
+//     DARK BLUE
+    strokeWidth: 5
+  };
+  var calories = 0;
+  var start_point;
+  var numberofPoints = 0;
+
+  tool.onMouseDrag = function(event) {
+    if (numberofPoints > 2) {
+      $("#doneButton").show();
+    }
+    if (done == false) {
+      if (numberofPoints == 0) {
+        start_point = new paper.Path.Circle({
+          center: event.point,
+          radius: 8,
+          fillColor: '#79b5db',
+          strokeColor: "white"
+        });
+        shape = paper.Shape.Circle(event.point, 15);
+        shape.strokeColor = '#79b5db';
+      }
+      myPath.add(event.point);
+      numberofPoints++;
+      secondPoint = event.point;
+      if (secondPoint != null && firstPoint != null) {
+        distance += firstPoint.getDistance(secondPoint);
+        document.getElementById("distance").innerHTML = (distance / 100).toFixed(2);
+      }
+      firstPoint = event.point;
+      myPath.smooth();
+      updateTimeCalorie(distance);
+    }
+  };
+
+  function toggleSave(event){
+//     $('#saveBtn').hide();
+//     $('#saved').show();
+    $('#saveBtn').attr('class', 'fas fa-heart');
+  }
+
+  function undoButtonHandler() {
+    if (!done) {
+      myPath.closed = false;
+      var segDistance = 0;
+      if (myPath.segments.length >= 20) {
+        segDistance = (myPath.segments[myPath.segments.length-1]._point).getDistance(myPath.segments[myPath.segments.length - 20]._point);
+        distance -= segDistance;
+        document.getElementById("distance").innerHTML = (distance / 100).toFixed(2);
+      
+        pathHistory.push([myPath.segments.slice(myPath.segments.length - 20, myPath.segments.length), segDistance]);
+        myPath.removeSegments(myPath.segments.length - 20, myPath.segments.length);
+      }else{
+//         location.reload();
+        if(myPath.segments.length != 0){
+             myPath.removeSegments();
+        }
+        else{
+        start_point.remove();
+        shape.remove();
+        numberofPoints = 0;
+        }
+      }
+      if (pathHistory.length > 10) {
+        pathHistory.shift();
+      }
+       updateTimeCalorie(distance);
+    }
+  };
+
+  function redoButtonHandler(event) {
+    distance += pathHistory[pathHistory.length-1][1];
+    document.getElementById("distance").innerHTML = (distance / 100).toFixed(2);
+    myPath.addSegments(pathHistory.pop()[0]);
+    updateTimeCalorie(distance);
+  };
+
+  function resetButtonHandler(event) {
+    location.reload();
+  };
+
+   function closePathHandler(event) {
+     if(!myPath.closed){
+       myPath.closed = true;
+     }
+     distance=myPath.length;
+     document.getElementById("distance").innerHTML = (distance / 100).toFixed(2);
+  };
+
+  function doneButtonHandler(event) {
+    done = true;
+  }
+
+  myPath.onClick=function(event){
+    myPath.insert(event.point);
+  }
+
+
+
+  $('#pullout-tab').click(function() {
+  $('#pullout').toggleClass('active');
+});
+  $("#speed").change(function(){
+    updateTimeCalorie(distance);
+  });
+
+/* Set the width of the side navigation to 250px */
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+/* Set the width of the side navigation to 0 */
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+
+function updateTimeCalorie(distance_input){
+  if(distance_input>0){
+    var timeInHours = (distance_input/100/parseInt($("#speed").val()));
+    var hourInString = ((Math.floor(timeInHours)>=10)? (""+Math.floor(timeInHours)): ("0"+ Math.floor(timeInHours)));
+    var minuteInString = Math.floor((timeInHours - Math.floor(timeInHours))*60)>=10? (""+Math.floor((timeInHours - Math.floor(timeInHours))*60)) :("0"+Math.floor((timeInHours - Math.floor(timeInHours))*60)) ; 
+    $("#time").html((hourInString+"h "+minuteInString + "m"));
+    
+    calories = (parseInt($("#speed").val()) * 15 * distance_input / 100).toFixed(2);
+    $("#calories").html(calories);
+  }
+}
 
 </script>
-</html>
 
+</html>
