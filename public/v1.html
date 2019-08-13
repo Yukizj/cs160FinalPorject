@@ -50,12 +50,14 @@
       background-color: #79b5db;
       margin-top: 10px;
       margin-bottom:10px;
+      position:fixed;
+      z-index:99
     }
 
     .toolbar {
 /*         background-color: red; */
     width: 50px;
-    height: 100%;
+    height: 300px;
     top: 100px;
     right: 20px;
     text-decoration: none;
@@ -63,7 +65,8 @@
     text-transform: uppercase;
     display: inline-block;
     z-index: 2;
-    position: absolute;
+    position: fixed;
+    
   }
 
 /*     #myCanvas {
@@ -83,10 +86,12 @@
     } */
 
     canvas{
-      width: 450px;
-      height: 850px;
+      width: 850px;
+/*       height: 850px; */
+      height:850px;
       display: block;
       background-image: url('/image/berkeleyMap2.png');
+      opacity:0.7;
       background-position: center;
       background-size: cover;
     }
@@ -113,9 +118,9 @@
   border-radius:25px;
   width: 300px;
   background: #ffffff;
-  opacity: .8;
+  opacity: .9;
   transition: all 1s ease;
-  z-index: 1000;
+  z-index: 98;
 }
 
 #pullout.active {
@@ -128,7 +133,6 @@
   top: 60px;
   width: 300px;
   height: 280px;
-  background: #79b5db;
 /*   position: absolute;
   height: 230px;
   width: 280px;
@@ -180,9 +184,7 @@
       border: 1px solid black;
     }
 
-    #doneButton {
-/*       display: none; */
-    }
+
     
     #saveButton{
       display: none;
@@ -194,10 +196,10 @@
       height: 100%; /* 100% Full-height */
       width: 0; /* 0 width - change this with JavaScript */
       position: fixed; /* Stay in place */
-      z-index: 3; /* Stay on top */
+      z-index: 99; /* Stay on top */
       top: 0; /* Stay at the top */
       left: 0;
-      background-color: #79b5db; /* light blue*/
+      background-color: #79b5db;
       overflow-x: hidden; /* Disable horizontal scroll */
       padding-top: 60px; /* Place content 60px from the top */
       transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
@@ -217,13 +219,15 @@
     .sidenav a:hover {
       color: #818181;
     }
+    
+
 
     /* Position and style the close button (top right corner) */
     .sidenav .closebtn {
       position: absolute;
       top: 0;
-      right: 25px;
-      font-size: 36px;
+      right: 5px;
+      font-size: 40px;
       margin-left: 50px;
     }
 
@@ -271,12 +275,12 @@ ul {
 
   <div class='header'>
     <div class='row'>
-      <div class='col-3' align=middle style='color:white; margin-top:5px'>
-        <i class="fa fa-bars" style='font-size:36px' onclick="openNav()"></i>
+      <div class='col-3' align=middle style='color:white;'>
+        <i class="fa fa-bars" style='font-size:36px;margin-top:17px' onclick="openNav()"></i>
       </div>
       <div class='col-6' align=middle style='color:white; font-size:42px; margin-top:5px'>ON THE <b>RUN</b></div>
-      <div class='col-3' align=middle style='color:white; margin-top:5px'>
-        <i class="fa fa-search-plus" style='font-size:32px'></i>
+      <div class='col-3' align=middle style='color:white;'>
+<!--         <i class="fa fa-search-plus" style='font-size:32px; margin-top:17px'></i> -->
       </div>
     </div>
   </div>
@@ -291,57 +295,65 @@ ul {
             <i class="fa fa-undo" style='font-size:36px'  onClick="undoButtonHandler()"></i>
     undo
   </button> -->
-    <i class="fas fa-undo" style='font-size:36px; color:#79b5db' onClick="undoButtonHandler()"></i>
+    <i class="fas fa-pen" style='font-size:36px; color:#79b5db;' onClick="doneButtonHandler()" id='donebutton'></i>
     <p></p>
-    <i class="fas fa-redo" style='font-size:36px; color:#79b5db' onClick="redoButtonHandler()"></i>
+    <i class="fas fa-undo" style='font-size:36px; color:#79b5db;' onClick="undoButtonHandler()"></i>
     <p></p>
-    <i class="fas fa-link" style='font-size:36px; color:#79b5db' onClick="closePathHandler()"></i>
+    <i class="fas fa-redo" style='font-size:36px; color:#79b5db;' onClick="redoButtonHandler()"></i>
+    <p></p>
+    <i class="far fa-dot-circle" style='font-size:36px; color:#79b5db;' onClick="closePathHandler()"></i>
     <!-- <button id="closeButton" type="button" class="btn btn-secondary" onClick="closePathHandler()">
     close
   </button> -->
     <p></p>
-    <i class="fas fa-trash" style='font-size:36px; color:#79b5db' onClick="resetButtonHandler()"></i>
+    <i class="fas fa-times-circle" style='font-size:36px; color:#79b5db;' onClick="resetButtonHandler()"></i>
     <!-- <button id="resetButton" type="button" class="btn btn-secondary" onClick="resetButtonHandler()">
     reset
   </button> -->
-    <p></p>
-    <button id="doneButton" type="button" class="btn btn-secondary" onClick="doneButtonHandler()">done</button>
+
   </div>
 
   <div class='center'>
     <div id="pullout">
       <div id="pullout-tab" align='middle'>
-        <p align='middle' style='color:white;font-size:24px; padding:10px'>
+        <p align='middle' style='color:white;font-size:36px; padding:0px'>
           Distance: <span id="distance"> 0.0</span> miles
         </p>
       </div>
-      <div id="pullout-inner" style='background-color:white;opacity:0.95'>
-        <div class=row align=middle>
-          <div class=col-6 id="speedInputBox" align=right style='padding:5px'>
-            <a style='color:#79b5db; font-family: Raleway, sans-serif; font-size:12px'><i><b>Input your avg speed</b></i></a>
+      <div id="pullout-inner" style='background-color:white;opacity:0.95' align=center>
+        <div class=row style='padding:15px'>
+          <div class=col-6 id="speedInputBox" align=right style='padding-top:5px;padding-left:15px'>
+<!--             <a style='color:#79b5db; font-family: Raleway, sans-serif; font-size:12px'><i><b>Input your avg speed</b></i></a> -->
             <form action="/action_page.php" style='padding=0px'>
               <input style='font-size:36px; color:#79b5db; background-color:#e1edf5;' id='speed' type="number"
                 name="quantity" min="1" max="15" value='5' >
-              <a style='font-size:24px; color:#79b5db; padding:5px;'>MPH</a>
+              <a style='font-size:30px; color:#79b5db; padding:5px;'>MPH</a>
             </form>  
           </div>
 
-          <div class=col-6 align=left style='padding-top:5px'>
-            <i class="far fa-heart"style='color:#79b5db; font-size:50px; margin-top:25px; margin-bottom:0px' id='saveBtn'
+          <div class=col-6 align=center style='padding-top:15px'>
+            <i class="far fa-heart"style='color:#79b5db; font-size:50px; ' id='saveBtn'
                onclick='toggleSave()'></i> 
 <!--             <i class="fas fa-heart"style='color:#79b5db; font-size:50px; margin-top:25px; margin-bottom:0px' id='saved'></i>  -->
           </div>
         </div>
         
-        <div class=row align=middle>
-          <div class=col-6 align=right style='padding:5px'>
-<p style='margin-bottom:0px;color:#79b5db; font-family: Raleway, sans-serif; font-size:8px'><i>*estimated*</i></p>
-            <i class="far fa-clock" style='color:#79b5db; font-size:30px; margin-top:0px; margin-bottom:0px'></i>   <a style='font-size:30px; color:#79b5db;'><span id="time">00h 00m</span></a>
+<!--         <div class=row align=middle style='margin-bottom:0px'>
+          <div class=col-12>
+          <p style='color:#79b5db; font-family: Raleway, sans-serif; font-size:12px' align=middle>
+            <i><b>ESTIMATED TIME & CALORIES BURNED</b></i></p>
           </div>
-             <div class=col-6 align = left style='padding:5px'>
-<p style='margin-bottom:0px;color:#79b5db; font-family: Raleway, sans-serif; font-size:8px'><i>*estimated*</i></p>
-            <i class="fas fa-fire" style='color:#79b5db; font-size:30px; margin-top:0px; margin-bottom:0px'></i>   <a style='font-size:30px; color:#79b5db;'><span id="calories"> 0</span></a>
-            <p style='margin-bottom:0px;margin-top:0px;color:#79b5db; font-family: Raleway, sans-serif; font-size:12px'>CALORIES BURNED</p>
+        </div> -->
+        
+        <div class=row align=middle style='margin-bottom:10px'>
+          <div class=col-6 align=center style='padding-top:0px;padding-left:20px'>
+            <i class="far fa-clock" style='color:#79b5db; font-size:50px; margin-top:0px; margin-bottom:0px'></i> 
+            <p style='font-size:30px; color:#79b5db;'><span id="time">00h 00m</span></p>
+          </div>
+             <div class=col-6 align = center style='padding:0px'>
+            <i class="fas fa-fire" style='color:#79b5db; font-size:50px; margin-top:0px; margin-bottom:0px'></i>  
+               <p style='font-size:30px; color:#79b5db;'><span id="calories"> 0</span>
+                 <a style='font-size:18px'>Cal</a></p>
           </div>
         </div>
         
@@ -373,9 +385,7 @@ ul {
   var numberofPoints = 0;
 
   tool.onMouseDrag = function(event) {
-    if (numberofPoints > 2) {
-      $("#doneButton").show();
-    }
+
     if (done == false) {
       if (numberofPoints == 0) {
         start_point = new paper.Path.Circle({
@@ -392,7 +402,7 @@ ul {
       secondPoint = event.point;
       if (secondPoint != null && firstPoint != null) {
         distance += firstPoint.getDistance(secondPoint);
-        document.getElementById("distance").innerHTML = (distance / 100).toFixed(2);
+        document.getElementById("distance").innerHTML = (distance / 1000).toFixed(2);
       }
       firstPoint = event.point;
       myPath.smooth();
@@ -404,6 +414,7 @@ ul {
 //     $('#saveBtn').hide();
 //     $('#saved').show();
     $('#saveBtn').attr('class', 'fas fa-heart');
+
   }
 
   function undoButtonHandler() {
@@ -455,7 +466,14 @@ ul {
   };
 
   function doneButtonHandler(event) {
-    done = true;
+    if(!done){
+      done=true;
+      document.getElementById('donebutton').style.color='#ccd8df  ';
+    }
+    else{
+      done=false;
+      document.getElementById('donebutton').style.color = '#79B5DB';
+    }
   }
 
   myPath.onClick=function(event){
@@ -473,7 +491,7 @@ ul {
 
 /* Set the width of the side navigation to 250px */
 function openNav() {
-  document.getElementById("mySidenav").style.width = "250px";
+  document.getElementById("mySidenav").style.width = "200px";
 }
 
 /* Set the width of the side navigation to 0 */
@@ -483,12 +501,14 @@ function closeNav() {
 
 function updateTimeCalorie(distance_input){
   if(distance_input>0){
-    var timeInHours = (distance_input/100/parseInt($("#speed").val()));
+    var timeInHours = (distance_input/1000/parseInt($("#speed").val()));
     var hourInString = ((Math.floor(timeInHours)>=10)? (""+Math.floor(timeInHours)): ("0"+ Math.floor(timeInHours)));
     var minuteInString = Math.floor((timeInHours - Math.floor(timeInHours))*60)>=10? (""+Math.floor((timeInHours - Math.floor(timeInHours))*60)) :("0"+Math.floor((timeInHours - Math.floor(timeInHours))*60)) ; 
+
     $("#time").html((hourInString+"h "+minuteInString + "m"));
     
-    calories = (parseInt($("#speed").val()) * 15 * distance_input / 100).toFixed(2);
+//     calories = (parseInt($("#speed").val()) * 15 * distance_input / 100).toFixed(2);
+    calories = ((distance_input/1000)*100).toFixed(2); //burn about 100 calories per miles
     $("#calories").html(calories);
   }
 }
